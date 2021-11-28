@@ -7,6 +7,7 @@ import copy
 X = "X"
 O = "O"
 EMPTY = None
+res_action = None
 
 
 def initial_state():
@@ -62,6 +63,9 @@ def result(board, action):
     """
 
     b = copy.deepcopy(board)
+
+    if action is None:
+        t = ''
 
     x_idx = action[0]
     y_idx = action[1]
@@ -127,14 +131,39 @@ def utility(board):
     return 0
 
 
-def minimax(board, paths={}):
+def _minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-
+    global res_action
+    print(res_action)
     if terminal(board):
         return utility(board)
 
+    utilities = []
+    moves = []
+
     for action in actions(board):
-        minimax(result(board, action), paths)
+        res_board = result(board, action)
+        utilities.append(_minimax(res_board))
+        moves.append(action)
+
+    if player(board) == X:
+        max_score_index = utilities.index(max(utilities))
+        res_action = moves[max_score_index]
+        return utilities[max_score_index]
+    else:
+        min_score_index = utilities.index(min(utilities))
+        res_action = moves[min_score_index]
+        return utilities[min_score_index]
+
+
+def minimax(board):
+
+    global res_action
+
+    _minimax(board)
+    print(res_action)
+
+    return res_action
 
