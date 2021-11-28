@@ -136,7 +136,6 @@ def _minimax(board):
     Returns the optimal action for the current player on the board.
     """
     global res_action
-    print(res_action)
     if terminal(board):
         return utility(board)
 
@@ -163,7 +162,6 @@ def minimax(board):
     global res_action
 
     _minimax(board)
-    print(res_action)
 
     return res_action
 
